@@ -1,18 +1,8 @@
-import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import {
-  HealthCheck,
-  HealthCheckService,
-  TypeOrmHealthIndicator,
-} from '@nestjs/terminus';
-import { Response } from 'express';
+import { HealthCheckService, TypeOrmHealthIndicator } from '@nestjs/terminus';
 interface HealthCheckResult {
   dependencies: Record<string, string>[];
-}
-
-interface HealthCheckDependencyResult {
-  status: number;
-  response_time: string;
 }
 
 @Controller()
@@ -29,7 +19,6 @@ export class HealthcheckController {
     return {
       dependencies: [
         { resource_type: 'postgresql', url: '/healthcheck-postgresql' },
-        { resource_type: 'pubsub', url: '/healthcheck-pubsub' },
       ],
     };
   }

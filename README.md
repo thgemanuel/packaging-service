@@ -59,7 +59,6 @@ O projeto segue os padrões de Clean Architecture com três camadas:
 ### Pré-requisitos
 - Docker e Docker Compose
 - Make
-- Node.js (para desenvolvimento local)
 
 ### Comandos Disponíveis
 
@@ -89,11 +88,7 @@ make copy-env
 ### Primeira Execução
 
 1. Clone o repositório
-2. Execute o setup inicial:
-   ```bash
-   make setup
-   ```
-3. Execute a aplicação:
+2. Execute a aplicação:
    ```bash
    make run
    ```
@@ -150,8 +145,7 @@ Verifica o status do serviço e suas dependências.
 ```json
 {
   "dependencies": [
-    { "resource_type": "postgresql", "url": "/healthcheck-postgresql" },
-    { "resource_type": "pubsub", "url": "/healthcheck-pubsub" }
+    { "resource_type": "postgresql", "url": "/healthcheck-postgresql" }
   ]
 }
 ```

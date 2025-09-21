@@ -12,7 +12,11 @@ export class Dimensions {
       throw new Error('All dimensions must be positive numbers');
     }
 
-    if (!Number.isFinite(this.height) || !Number.isFinite(this.width) || !Number.isFinite(this.length)) {
+    if (
+      !Number.isFinite(this.height) ||
+      !Number.isFinite(this.width) ||
+      !Number.isFinite(this.length)
+    ) {
       throw new Error('All dimensions must be finite numbers');
     }
   }
@@ -30,11 +34,12 @@ export class Dimensions {
    */
   canFitInside(container: Dimensions): boolean {
     const thisDims = this.getAllRotations();
-    
-    return thisDims.some(rotation => 
-      rotation.height <= container.height &&
-      rotation.width <= container.width &&
-      rotation.length <= container.length
+
+    return thisDims.some(
+      (rotation) =>
+        rotation.height <= container.height &&
+        rotation.width <= container.width &&
+        rotation.length <= container.length,
     );
   }
 
@@ -43,21 +48,22 @@ export class Dimensions {
    */
   getAllRotations(): Dimensions[] {
     const { height, width, length } = this;
-    
+
     return [
-      new Dimensions(height, width, length),   // Original
-      new Dimensions(height, length, width),   // Rotate around height
-      new Dimensions(width, height, length),   // Rotate around length
-      new Dimensions(width, length, height),   // Rotate around width
-      new Dimensions(length, height, width),   // Rotate around width (different)
-      new Dimensions(length, width, height),   // Rotate around height (different)
-    ].filter((dims, index, array) => 
-      // Remove duplicates (for cases where dimensions are equal)
-      array.findIndex(d => 
-        d.height === dims.height && 
-        d.width === dims.width && 
-        d.length === dims.length
-      ) === index
+      new Dimensions(height, width, length),
+      new Dimensions(height, length, width),
+      new Dimensions(width, height, length),
+      new Dimensions(width, length, height),
+      new Dimensions(length, height, width),
+      new Dimensions(length, width, height),
+    ].filter(
+      (dims, index, array) =>
+        array.findIndex(
+          (d) =>
+            d.height === dims.height &&
+            d.width === dims.width &&
+            d.length === dims.length,
+        ) === index,
     );
   }
 
@@ -66,22 +72,22 @@ export class Dimensions {
    */
   getBestFitRotation(container: Dimensions): Dimensions | null {
     const rotations = this.getAllRotations();
-    
-    const validRotations = rotations.filter(rotation =>
-      rotation.height <= container.height &&
-      rotation.width <= container.width &&
-      rotation.length <= container.length
+
+    const validRotations = rotations.filter(
+      (rotation) =>
+        rotation.height <= container.height &&
+        rotation.width <= container.width &&
+        rotation.length <= container.length,
     );
 
     if (validRotations.length === 0) {
       return null;
     }
 
-    // Return the rotation that maximizes volume utilization
     return validRotations.reduce((best, current) => {
       const bestUtilization = best.getVolume() / container.getVolume();
       const currentUtilization = current.getVolume() / container.getVolume();
-      
+
       return currentUtilization > bestUtilization ? current : best;
     });
   }
@@ -90,9 +96,11 @@ export class Dimensions {
    * Check if dimensions are equal
    */
   equals(other: Dimensions): boolean {
-    return this.height === other.height && 
-           this.width === other.width && 
-           this.length === other.length;
+    return (
+      this.height === other.height &&
+      this.width === other.width &&
+      this.length === other.length
+    );
   }
 
   /**
@@ -105,7 +113,11 @@ export class Dimensions {
   /**
    * Create from object
    */
-  static fromObject(obj: { height: number; width: number; length: number }): Dimensions {
+  static fromObject(obj: {
+    height: number;
+    width: number;
+    length: number;
+  }): Dimensions {
     return new Dimensions(obj.height, obj.width, obj.length);
   }
 }

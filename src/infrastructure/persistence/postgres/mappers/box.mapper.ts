@@ -27,12 +27,15 @@ export class BoxMapper {
 
     const box = new Box(
       boxSchema.boxId,
-      boxSchema.boxType as any, // We'll need to map this properly
-      new Dimensions(Number(boxSchema.height), Number(boxSchema.width), Number(boxSchema.length)),
+      boxSchema.boxType as any,
+      new Dimensions(
+        Number(boxSchema.height),
+        Number(boxSchema.width),
+        Number(boxSchema.length),
+      ),
       boxSchema.isActive,
     );
-    
-    // Set the inherited properties
+
     box.id = boxSchema.id;
     box.insertedAt = boxSchema.insertedAt;
     box.updatedAt = boxSchema.updatedAt;

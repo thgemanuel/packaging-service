@@ -56,7 +56,6 @@ describe('EntityNotFoundExceptionFilter', () => {
 
   describe('catch', () => {
     it('should log error and return 404 response', () => {
-      // Arrange
       const exception = new EntityNotFoundException('Entity not found');
       const expectedResponse = {
         statusCode: HttpStatus.NOT_FOUND,
@@ -64,10 +63,8 @@ describe('EntityNotFoundExceptionFilter', () => {
         error: exception.name,
       };
 
-      // Act
       filter.catch(exception, mockArgumentsHost);
 
-      // Assert
       expect(logger.error).toHaveBeenCalledWith('Entity not found exception', {
         error: exception,
         path: '/test-url',

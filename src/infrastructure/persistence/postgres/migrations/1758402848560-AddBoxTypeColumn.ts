@@ -8,9 +8,7 @@ export class AddBoxTypeColumn1758402848560 implements MigrationInterface {
     );
 
     // Update existing records with box_type values based on box_id
-    await queryRunner.query(
-      `UPDATE "boxes" SET "box_type" = "box_id"`,
-    );
+    await queryRunner.query(`UPDATE "boxes" SET "box_type" = "box_id"`);
 
     // Make box_type NOT NULL
     await queryRunner.query(
@@ -20,8 +18,6 @@ export class AddBoxTypeColumn1758402848560 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Remove box_type column
-    await queryRunner.query(
-      `ALTER TABLE "boxes" DROP COLUMN "box_type"`,
-    );
+    await queryRunner.query(`ALTER TABLE "boxes" DROP COLUMN "box_type"`);
   }
 }

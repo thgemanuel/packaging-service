@@ -54,7 +54,6 @@ describe('DomainExceptionFilter', () => {
 
   describe('catch', () => {
     it('should log warning and return 400 response with validation errors', () => {
-      // Arrange
       const errors = ['Validation error 1', 'Validation error 2'];
       const exception = new DomainException(errors);
       const expectedResponse = {
@@ -66,10 +65,8 @@ describe('DomainExceptionFilter', () => {
         })),
       };
 
-      // Act
       filter.catch(exception, mockArgumentsHost);
 
-      // Assert
       expect(logger.warn).toHaveBeenCalledWith('Domain validation exception', {
         error: exception,
         errors: errors,

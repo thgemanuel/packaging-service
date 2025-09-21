@@ -1,6 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type, Transform } from 'class-transformer';
-import { IsArray, IsDefined, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsDefined,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 export class DimensionsDto {
   @ApiProperty({ example: 40 })
@@ -64,7 +73,10 @@ export class PackagedBoxDto {
   @IsArray()
   produtos: string[];
 
-  @ApiProperty({ required: false, example: 'Produto não cabe em nenhuma caixa disponível.' })
+  @ApiProperty({
+    required: false,
+    example: 'Produto não cabe em nenhuma caixa disponível.',
+  })
   @IsOptional()
   @IsString()
   observacao?: string;

@@ -3,7 +3,6 @@ import { DomainModule } from '@domain/domain.module';
 import { InfrastructureModule } from '@infrastructure/infrastructure.module';
 import { Module, Logger } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-// import { SentryModule } from '@sentry/nestjs/setup'; // Removed Sentry integration
 
 @Module({
   imports: [
@@ -11,13 +10,10 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: [process.env.NODE_ENV == 'test' ? '.env.tests' : '', '.env'],
     }),
-    // SentryModule.forRoot(), // Removed Sentry integration
     InfrastructureModule,
     DomainModule,
     ApplicationModule,
   ],
-  providers: [
-    Logger
-  ],
+  providers: [Logger],
 })
 export class RootModule {}

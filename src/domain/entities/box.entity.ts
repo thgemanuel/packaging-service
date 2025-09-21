@@ -10,7 +10,12 @@ export class Box extends AbstractEntity {
   private _dimensions: Dimensions;
   private _isActive: boolean;
 
-  constructor(boxId: string, boxType: BoxType, dimensions: Dimensions, isActive: boolean = true) {
+  constructor(
+    boxId: string,
+    boxType: BoxType,
+    dimensions: Dimensions,
+    isActive: boolean = true,
+  ) {
     super();
     this.setBoxId(boxId);
     this.setBoxType(boxType);
@@ -68,13 +73,13 @@ export class Box extends AbstractEntity {
     if (products.length === 0) return true;
     if (products.length === 1) return this.canFitProduct(products[0]);
 
-    // Simplified check: sum of volumes should not exceed box volume
-    // This is not accurate for real 3D packing but gives a basic estimation
-    const totalProductVolume = products.reduce((sum, product) => sum + product.getVolume(), 0);
+    const totalProductVolume = products.reduce(
+      (sum, product) => sum + product.getVolume(),
+      0,
+    );
     const boxVolume = this.getVolume();
-    
-    // Use 80% efficiency factor for multiple products
-    return totalProductVolume <= (boxVolume * 0.8);
+
+    return totalProductVolume <= boxVolume * 0.8;
   }
 
   /**
@@ -89,10 +94,13 @@ export class Box extends AbstractEntity {
    */
   calculateSpaceUtilization(products: Product[]): number {
     if (products.length === 0) return 0;
-    
-    const totalProductVolume = products.reduce((sum, product) => sum + product.getVolume(), 0);
+
+    const totalProductVolume = products.reduce(
+      (sum, product) => sum + product.getVolume(),
+      0,
+    );
     const boxVolume = this.getVolume();
-    
+
     return Math.min(totalProductVolume / boxVolume, 1.0);
   }
 
@@ -121,14 +129,19 @@ export class Box extends AbstractEntity {
 
   private setBoxType(boxType: BoxType): void {
     if (!boxType) {
-      throw new InvalidDimensionsException('Box type cannot be null or undefined');
+      throw new InvalidDimensionsException(
+        'Box type cannot be null or undefined',
+      );
     }
     this._boxType = boxType;
   }
 
   private setDimensions(dimensions: Dimensions): void {
     if (!dimensions) {
-      throw new InvalidDimensionsException('Dimensions cannot be null or undefined', this._boxId);
+      throw new InvalidDimensionsException(
+        'Dimensions cannot be null or undefined',
+        this._boxId,
+      );
     }
     this._dimensions = dimensions;
   }
@@ -149,5 +162,4 @@ export class Box extends AbstractEntity {
   }
 }
 
-// Import BoxTypeHelper after Box class to avoid circular dependency
 import { BoxTypeHelper } from '../enums/box-type.enum';

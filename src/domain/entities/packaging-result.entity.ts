@@ -30,7 +30,7 @@ export class PackagingResult extends AbstractEntity {
     orderId: string,
     box: Box | null = null,
     products: PackagedProduct[] = [],
-    observation: string | null = null
+    observation: string | null = null,
   ) {
     super();
     this.setOrderId(orderId);
@@ -93,7 +93,7 @@ export class PackagingResult extends AbstractEntity {
   getTotalProductVolume(): number {
     return this._products.reduce((total, product) => {
       const dims = product.originalDimensions;
-      return total + (dims.height * dims.width * dims.length);
+      return total + dims.height * dims.width * dims.length;
     }, 0);
   }
 
@@ -107,7 +107,10 @@ export class PackagingResult extends AbstractEntity {
   /**
    * Add a product to this packaging result
    */
-  addProduct(product: Product, rotatedDimensions?: { height: number; width: number; length: number }): void {
+  addProduct(
+    product: Product,
+    rotatedDimensions?: { height: number; width: number; length: number },
+  ): void {
     const packagedProduct: PackagedProduct = {
       productId: product.productId,
       originalDimensions: {
@@ -160,7 +163,7 @@ export class PackagingResult extends AbstractEntity {
    */
   getEfficiencyRating(): 'EXCELLENT' | 'GOOD' | 'FAIR' | 'POOR' | 'UNPACKABLE' {
     if (this.isUnpackable()) return 'UNPACKABLE';
-    
+
     if (this._spaceUtilization >= 0.8) return 'EXCELLENT';
     if (this._spaceUtilization >= 0.6) return 'GOOD';
     if (this._spaceUtilization >= 0.4) return 'FAIR';
@@ -180,12 +183,13 @@ export class PackagingResult extends AbstractEntity {
       return;
     }
 
-    // Validate no duplicate product IDs
-    const productIds = products.map(p => p.productId);
+    const productIds = products.map((p) => p.productId);
     const uniqueProductIds = new Set(productIds);
-    
+
     if (productIds.length !== uniqueProductIds.size) {
-      throw new InvalidDimensionsException('Packaging result cannot contain duplicate products');
+      throw new InvalidDimensionsException(
+        'Packaging result cannot contain duplicate products',
+      );
     }
 
     this._products = [...products];
@@ -194,15 +198,24 @@ export class PackagingResult extends AbstractEntity {
   /**
    * Create a successful packaging result
    */
-  static createSuccessful(orderId: string, box: Box, products: Product[]): PackagingResult {
+  static createSuccessful(
+    orderId: string,
+    box: Box,
+    products: Product[],
+  ): PackagingResult {
     const result = new PackagingResult(orderId, box);
-    products.forEach(product => {
+    products.forEach((product) => {
       const bestRotation = box.getBestFitRotationForProduct(product);
-      result.addProduct(product, bestRotation ? {
-        height: bestRotation.height,
-        width: bestRotation.width,
-        length: bestRotation.length,
-      } : undefined);
+      result.addProduct(
+        product,
+        bestRotation
+          ? {
+              height: bestRotation.height,
+              width: bestRotation.width,
+              length: bestRotation.length,
+            }
+          : undefined,
+      );
     });
     return result;
   }
@@ -210,9 +223,13 @@ export class PackagingResult extends AbstractEntity {
   /**
    * Create a failed packaging result (products don't fit)
    */
-  static createFailed(orderId: string, products: Product[], observation: string): PackagingResult {
+  static createFailed(
+    orderId: string,
+    products: Product[],
+    observation: string,
+  ): PackagingResult {
     const result = new PackagingResult(orderId, null, [], observation);
-    products.forEach(product => result.addProduct(product));
+    products.forEach((product) => result.addProduct(product));
     return result;
   }
 

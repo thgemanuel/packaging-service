@@ -18,7 +18,7 @@ export class Order extends AbstractEntity {
   }
 
   get products(): Product[] {
-    return [...this._products]; // Return a copy to prevent external modification
+    return [...this._products];
   }
 
   get productCount(): number {
@@ -36,7 +36,10 @@ export class Order extends AbstractEntity {
    * Get total volume of all products in the order
    */
   getTotalVolume(): number {
-    return this._products.reduce((total, product) => total + product.getVolume(), 0);
+    return this._products.reduce(
+      (total, product) => total + product.getVolume(),
+      0,
+    );
   }
 
   /**
@@ -44,13 +47,18 @@ export class Order extends AbstractEntity {
    */
   addProduct(product: Product): void {
     if (!product) {
-      throw new InvalidDimensionsException('Product cannot be null or undefined');
+      throw new InvalidDimensionsException(
+        'Product cannot be null or undefined',
+      );
     }
 
-    // Check if product already exists
-    const existingProduct = this._products.find(p => p.productId === product.productId);
+    const existingProduct = this._products.find(
+      (p) => p.productId === product.productId,
+    );
     if (existingProduct) {
-      throw new InvalidDimensionsException(`Product '${product.productId}' already exists in order '${this._orderId}'`);
+      throw new InvalidDimensionsException(
+        `Product '${product.productId}' already exists in order '${this._orderId}'`,
+      );
     }
 
     this._products.push(product);
@@ -62,13 +70,13 @@ export class Order extends AbstractEntity {
    */
   removeProduct(productId: string): boolean {
     const initialLength = this._products.length;
-    this._products = this._products.filter(p => p.productId !== productId);
-    
+    this._products = this._products.filter((p) => p.productId !== productId);
+
     if (this._products.length < initialLength) {
       this.touch();
       return true;
     }
-    
+
     return false;
   }
 
@@ -76,14 +84,14 @@ export class Order extends AbstractEntity {
    * Get a product by its ID
    */
   getProduct(productId: string): Product | undefined {
-    return this._products.find(p => p.productId === productId);
+    return this._products.find((p) => p.productId === productId);
   }
 
   /**
    * Check if a product exists in the order
    */
   hasProduct(productId: string): boolean {
-    return this._products.some(p => p.productId === productId);
+    return this._products.some((p) => p.productId === productId);
   }
 
   /**
@@ -97,7 +105,9 @@ export class Order extends AbstractEntity {
   /**
    * Get products sorted by a specific dimension
    */
-  getProductsSortedByDimension(dimension: 'height' | 'width' | 'length'): Product[] {
+  getProductsSortedByDimension(
+    dimension: 'height' | 'width' | 'length',
+  ): Product[] {
     return [...this._products].sort((a, b) => b[dimension] - a[dimension]);
   }
 
@@ -109,12 +119,11 @@ export class Order extends AbstractEntity {
       throw new EmptyOrderException(this._orderId);
     }
 
-    // Validate each product
-    this._products.forEach(product => {
+    this._products.forEach((product) => {
       if (product.getVolume() <= 0) {
         throw new InvalidDimensionsException(
           'Product has invalid dimensions (volume must be positive)',
-          product.productId
+          product.productId,
         );
       }
     });
@@ -141,12 +150,13 @@ export class Order extends AbstractEntity {
       return;
     }
 
-    // Validate no duplicate product IDs
-    const productIds = products.map(p => p.productId);
+    const productIds = products.map((p) => p.productId);
     const uniqueProductIds = new Set(productIds);
-    
+
     if (productIds.length !== uniqueProductIds.size) {
-      throw new InvalidDimensionsException('Order cannot contain duplicate products');
+      throw new InvalidDimensionsException(
+        'Order cannot contain duplicate products',
+      );
     }
 
     this._products = [...products];
@@ -157,7 +167,7 @@ export class Order extends AbstractEntity {
    */
   static createWithProducts(orderId: string, products: Product[]): Order {
     const order = new Order(orderId);
-    products.forEach(product => order.addProduct(product));
+    products.forEach((product) => order.addProduct(product));
     return order;
   }
 

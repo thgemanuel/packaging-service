@@ -111,10 +111,18 @@ export class CreatePackagingTables1758402848558 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Drop indexes
-    await queryRunner.query(`DROP INDEX IF EXISTS "IDX_packaging_results_box_id"`);
-    await queryRunner.query(`DROP INDEX IF EXISTS "IDX_packaging_results_order_id"`);
-    await queryRunner.query(`DROP INDEX IF EXISTS "IDX_order_products_product_id"`);
-    await queryRunner.query(`DROP INDEX IF EXISTS "IDX_order_products_order_id"`);
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "IDX_packaging_results_box_id"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "IDX_packaging_results_order_id"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "IDX_order_products_product_id"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "IDX_order_products_order_id"`,
+    );
     await queryRunner.query(`DROP INDEX IF EXISTS "IDX_orders_order_id"`);
     await queryRunner.query(`DROP INDEX IF EXISTS "IDX_boxes_is_active"`);
     await queryRunner.query(`DROP INDEX IF EXISTS "IDX_boxes_box_id"`);

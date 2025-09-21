@@ -6,11 +6,6 @@ import {
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GeneralExceptionFilter } from './general-exception.filter';
-import * as Sentry from '@sentry/nestjs';
-
-jest.mock('@sentry/nestjs', () => ({
-  captureException: jest.fn(),
-}));
 
 describe('GeneralExceptionFilter', () => {
   let filter: GeneralExceptionFilter;
@@ -64,16 +59,12 @@ describe('GeneralExceptionFilter', () => {
 
   describe('catch', () => {
     it('should capture exception in Sentry and handle HTTP exception', () => {
-      // Arrange
       const status = HttpStatus.BAD_REQUEST;
       const responseBody = { message: 'Bad Request' };
       const exception = new HttpException(responseBody, status);
 
-      // Act
       filter.catch(exception, mockArgumentsHost);
 
-      // Assert
-      expect(Sentry.captureException).toHaveBeenCalledWith(exception);
       expect(logger.warn).toHaveBeenCalledWith('HTTP exception caught', {
         error: exception,
         status,
@@ -86,7 +77,6 @@ describe('GeneralExceptionFilter', () => {
     });
 
     it('should capture exception in Sentry and handle unexpected error', () => {
-      // Arrange
       const exception = new Error('Unexpected error');
       const expectedResponse = {
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -96,11 +86,8 @@ describe('GeneralExceptionFilter', () => {
         path: '/test-url',
       };
 
-      // Act
       filter.catch(exception, mockArgumentsHost);
 
-      // Assert
-      expect(Sentry.captureException).toHaveBeenCalledWith(exception);
       expect(logger.error).toHaveBeenCalledWith('Unexpected error caught', {
         error: exception,
         path: '/test-url',
