@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationModule } from '@application/application.module';
 import { HealthcheckController } from './controllers/healthcheck.controller';
 import { PackagingController } from './controllers/packaging.controller';
+import { EducationalSystemController } from './controllers/educational-system.controller';
 import { repositories } from './persistence/postgres/repositories';
 import { schemas } from './persistence/postgres/schemas';
 import { mappers } from './persistence/postgres/mappers';
@@ -25,6 +26,10 @@ import { HttpModule } from '@nestjs/axios';
   ],
   providers: [Logger, ...repositories, ...mappers],
   exports: [...repositories.map((repo) => repo.provide), Logger],
-  controllers: [HealthcheckController, PackagingController],
+  controllers: [
+    HealthcheckController,
+    PackagingController,
+    EducationalSystemController,
+  ],
 })
 export class InfrastructureModule {}

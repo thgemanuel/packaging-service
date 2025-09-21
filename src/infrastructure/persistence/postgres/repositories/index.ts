@@ -6,6 +6,8 @@ import { ORDER_REPOSITORY_NAME } from '@domain/repositories/order.repository';
 import { OrderRepositoryTypeORM } from './order.repository';
 import { PACKAGING_RESULT_REPOSITORY_NAME } from '@domain/repositories/packaging-result.repository';
 import { PackagingResultRepositoryTypeORM } from './packaging-result.repository';
+import { PostgresProfessorRepository } from './professor.repository';
+import { PostgresRoomRepository } from './room.repository';
 
 export const repositories = [
   {
@@ -23,5 +25,13 @@ export const repositories = [
   {
     provide: PACKAGING_RESULT_REPOSITORY_NAME,
     useClass: PackagingResultRepositoryTypeORM,
+  },
+  {
+    provide: 'ProfessorRepository',
+    useClass: PostgresProfessorRepository,
+  },
+  {
+    provide: 'RoomRepository',
+    useClass: PostgresRoomRepository,
   },
 ];
