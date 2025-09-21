@@ -28,7 +28,7 @@ export class OrderRepositoryTypeORM implements OrderRepository {
       relations: ['orderProducts', 'packagingResults'],
     });
     return orderSchema
-      ? this.orderMapper.fromSchemaToEntity(orderSchema, true)
+      ? this.orderMapper.fromSchemaToEntity(orderSchema)
       : null;
   }
 
@@ -37,7 +37,7 @@ export class OrderRepositoryTypeORM implements OrderRepository {
     const savedSchema = await this.typeOrmRepository.save(orderSchema, {
       reload: true,
     });
-    return this.orderMapper.fromSchemaToEntity(savedSchema, true);
+    return this.orderMapper.fromSchemaToEntity(savedSchema);
   }
 
   async upsert(order: Order): Promise<Order> {
@@ -55,6 +55,6 @@ export class OrderRepositoryTypeORM implements OrderRepository {
     const savedSchema = await this.typeOrmRepository.save(orderSchema, {
       reload: true,
     });
-    return this.orderMapper.fromSchemaToEntity(savedSchema, true);
+    return this.orderMapper.fromSchemaToEntity(savedSchema);
   }
 }
