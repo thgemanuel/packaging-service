@@ -9,7 +9,6 @@ import {
   PackagedBoxDto,
   PackagedOrderDto,
 } from '@application/dto/packaging.dto';
-import { Dimensions } from '@domain/value-objects/dimensions.vo';
 
 @Injectable()
 export class PackagingMapper {

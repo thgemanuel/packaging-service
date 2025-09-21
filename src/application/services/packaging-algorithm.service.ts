@@ -3,7 +3,6 @@ import { Order } from '@domain/entities/order.entity';
 import { Product } from '@domain/entities/product.entity';
 import { Box } from '@domain/entities/box.entity';
 import { PackagingResult } from '@domain/entities/packaging-result.entity';
-import { ProductDoesNotFitException } from '@domain/exceptions/product-does-not-fit.exception';
 
 interface BoxAllocation {
   box: Box;

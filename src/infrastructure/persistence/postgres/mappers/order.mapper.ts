@@ -19,18 +19,14 @@ export class OrderMapper {
     return orderSchema;
   }
 
-  fromSchemaToEntity(orderSchema: OrderTypeORM, loadProducts = false): Order {
+  fromSchemaToEntity(orderSchema: OrderTypeORM): Order {
     if (!orderSchema) return null;
 
     const order = Order.createWithProducts(orderSchema.orderId, []);
 
-    // Set the inherited properties
     order.id = orderSchema.id;
     order.insertedAt = orderSchema.insertedAt;
     order.updatedAt = orderSchema.updatedAt;
-
-    // Note: Products would be loaded separately through order-products relationship
-    // This is a simplified version for the basic mapping
 
     return order;
   }

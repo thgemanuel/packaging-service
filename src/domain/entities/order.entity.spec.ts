@@ -2,7 +2,6 @@ import { Order } from './order.entity';
 import { Product } from './product.entity';
 import { Dimensions } from '../value-objects/dimensions.vo';
 import { EmptyOrderException } from '../exceptions/empty-order.exception';
-import { InvalidDimensionsException } from '../exceptions/invalid-dimensions.exception';
 
 describe('Order', () => {
   let order: Order;

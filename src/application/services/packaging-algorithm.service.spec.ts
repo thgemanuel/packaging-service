@@ -3,7 +3,6 @@ import { PackagingAlgorithmService } from './packaging-algorithm.service';
 import { Order } from '@domain/entities/order.entity';
 import { Product } from '@domain/entities/product.entity';
 import { Box } from '@domain/entities/box.entity';
-import { PackagingResult } from '@domain/entities/packaging-result.entity';
 import { BoxType } from '@domain/enums/box-type.enum';
 import { Dimensions } from '@domain/value-objects/dimensions.vo';
 import { EmptyOrderException } from '@domain/exceptions/empty-order.exception';

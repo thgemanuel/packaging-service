@@ -29,7 +29,6 @@ export class ProductMapper {
       Number(productSchema.length),
     );
 
-    // Set the inherited properties
     product.id = productSchema.id;
     product.insertedAt = productSchema.insertedAt;
     product.updatedAt = productSchema.updatedAt;

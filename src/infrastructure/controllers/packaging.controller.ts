@@ -7,7 +7,6 @@ import {
 import { PackageMultipleOrdersUseCase } from '@application/use-cases/package-multiple-orders.use-case';
 import { BadRequestDTO } from '@infrastructure/dto/bad-request.dto';
 import { InternalServerErrorDTO } from '@infrastructure/dto/internal-server-error.dto';
-import { Dimensions } from '@domain/value-objects/dimensions.vo';
 
 @Controller('packaging')
 export class PackagingController {

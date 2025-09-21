@@ -1,6 +1,5 @@
 import { Product } from './product.entity';
 import { Dimensions } from '../value-objects/dimensions.vo';
-import { InvalidDimensionsException } from '../exceptions/invalid-dimensions.exception';
 
 describe('Product', () => {
   let validDimensions: Dimensions;

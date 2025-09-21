@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Box } from '@domain/entities/box.entity';
-import {
-  BoxRepository,
-  BOX_REPOSITORY_NAME,
-} from '@domain/repositories/box.repository';
+import { BoxRepository } from '@domain/repositories/box.repository';
 import { BoxTypeORM } from '../schemas/box.schema';
 import { BoxMapper } from '../mappers/box.mapper';
 import { BoxType } from '@domain/enums/box-type.enum';

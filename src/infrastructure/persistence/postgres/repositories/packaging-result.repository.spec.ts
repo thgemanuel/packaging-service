@@ -92,7 +92,7 @@ describe('PackagingResultRepositoryTypeORM', () => {
         relations: ['order', 'box'],
         order: { insertedAt: 'DESC' },
       });
-      expect(mapper.fromSchemaToEntity).toHaveBeenCalledWith(mockSchema, true);
+      expect(mapper.fromSchemaToEntity).toHaveBeenCalledWith(mockSchema);
       expect(result).toEqual([mockEntity]);
     });
 

@@ -2,7 +2,6 @@ import { Box } from './box.entity';
 import { Dimensions } from '../value-objects/dimensions.vo';
 import { BoxType } from '../enums/box-type.enum';
 import { Product } from './product.entity';
-import { InvalidDimensionsException } from '../exceptions/invalid-dimensions.exception';
 
 describe('Box', () => {
   let validDimensions: Dimensions;

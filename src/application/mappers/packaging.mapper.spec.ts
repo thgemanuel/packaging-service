@@ -6,11 +6,7 @@ import { PackagingResult } from '@domain/entities/packaging-result.entity';
 import { BoxType } from '@domain/enums/box-type.enum';
 import { Box } from '@domain/entities/box.entity';
 import { Dimensions } from '@domain/value-objects/dimensions.vo';
-import {
-  PackagingRequestDto,
-  OrderDto,
-  ProductDto,
-} from '../dto/packaging.dto';
+import { PackagingRequestDto, OrderDto } from '../dto/packaging.dto';
 
 describe('PackagingMapper', () => {
   let mapper: PackagingMapper;

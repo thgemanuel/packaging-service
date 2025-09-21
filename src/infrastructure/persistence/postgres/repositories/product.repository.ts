@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from '@domain/entities/product.entity';
-import {
-  ProductRepository,
-  PRODUCT_REPOSITORY_NAME,
-} from '@domain/repositories/product.repository';
+import { ProductRepository } from '@domain/repositories/product.repository';
 import { ProductTypeORM } from '../schemas/product.schema';
 import { ProductMapper } from '../mappers/product.mapper';
 
@@ -49,13 +46,11 @@ export class ProductRepositoryTypeORM implements ProductRepository {
   async upsert(product: Product): Promise<Product> {
     const productSchema = this.productMapper.fromEntityToSchema(product);
 
-    // Try to find existing product by productId
     const existingProduct = await this.typeOrmRepository.findOne({
       where: { productId: product.productId },
     });
 
     if (existingProduct) {
-      // Update existing product
       productSchema.id = existingProduct.id;
       productSchema.insertedAt = existingProduct.insertedAt;
     }

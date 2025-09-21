@@ -7,7 +7,6 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-// import * as Sentry from '@sentry/nestjs'; // Removed Sentry integration
 
 @Catch()
 export class GeneralExceptionFilter implements ExceptionFilter {
@@ -17,8 +16,6 @@ export class GeneralExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-
-    // Sentry.captureException(exception); // Removed Sentry integration
 
     const isHttpException = exception instanceof HttpException;
 

@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { PackagingResult } from '@domain/entities/packaging-result.entity';
-import {
-  PackagingResultRepository,
-  PACKAGING_RESULT_REPOSITORY_NAME,
-} from '@domain/repositories/packaging-result.repository';
+import { PackagingResultRepository } from '@domain/repositories/packaging-result.repository';
 import { PackagingResultTypeORM } from '../schemas/packaging-result.schema';
 import { PackagingResultMapper } from '../mappers/packaging-result.mapper';
 import { OrderTypeORM } from '../schemas/order.schema';
@@ -31,7 +28,7 @@ export class PackagingResultRepositoryTypeORM
       order: { insertedAt: 'DESC' },
     });
     return resultSchemas.map((schema) =>
-      this.packagingResultMapper.fromSchemaToEntity(schema, true),
+      this.packagingResultMapper.fromSchemaToEntity(schema),
     );
   }
 
@@ -52,7 +49,7 @@ export class PackagingResultRepositoryTypeORM
     const savedSchema = await this.typeOrmRepository.save(resultSchema, {
       reload: true,
     });
-    return this.packagingResultMapper.fromSchemaToEntity(savedSchema, true);
+    return this.packagingResultMapper.fromSchemaToEntity(savedSchema);
   }
 
   async saveMany(results: PackagingResult[]): Promise<PackagingResult[]> {
@@ -77,7 +74,7 @@ export class PackagingResultRepositoryTypeORM
       reload: true,
     });
     return savedSchemas.map((schema) =>
-      this.packagingResultMapper.fromSchemaToEntity(schema, true),
+      this.packagingResultMapper.fromSchemaToEntity(schema),
     );
   }
 
@@ -109,7 +106,7 @@ export class PackagingResultRepositoryTypeORM
         relations: ['order', 'box'],
       });
       return savedSchema
-        ? this.packagingResultMapper.fromSchemaToEntity(savedSchema, true)
+        ? this.packagingResultMapper.fromSchemaToEntity(savedSchema)
         : result;
     }
 
@@ -148,7 +145,7 @@ export class PackagingResultRepositoryTypeORM
         relations: ['order', 'box'],
       });
       return savedSchemas.map((schema) =>
-        this.packagingResultMapper.fromSchemaToEntity(schema, true),
+        this.packagingResultMapper.fromSchemaToEntity(schema),
       );
     }
 

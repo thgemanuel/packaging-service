@@ -7,7 +7,6 @@ import {
 } from '../dto/packaging.dto';
 import { Order } from '@domain/entities/order.entity';
 import { Box } from '@domain/entities/box.entity';
-import { BoxType, BoxTypeHelper } from '@domain/enums/box-type.enum';
 import { PackagingMapper } from '@application/mappers/packaging.mapper';
 import { OrderRepository } from '@domain/repositories/order.repository';
 import { ProductRepository } from '@domain/repositories/product.repository';
@@ -36,28 +35,20 @@ export class PackageMultipleOrdersUseCase {
   ) {}
 
   async execute(dto: PackagingRequestDto): Promise<PackagingResponseDto> {
-    // Get available boxes (lazy initialization)
     const availableBoxes: Box[] = await this.boxRepository.findActive();
 
     const response: PackagingResponseDto = { pedidos: [] };
 
     for (const orderDto of dto.pedidos) {
-      // 1. Criar e persistir o pedido com produtos
       const order: Order = this.mapper.mapOrderDtoToDomain(orderDto);
 
-      // 2. Upsert produtos (criar ou atualizar)
       await this.productRepository.upsertMany(order.products);
 
-      // 3. Upsert o pedido (criar ou atualizar)
-      const savedOrder = await this.orderRepository.upsert(order);
+      await this.orderRepository.upsert(order);
 
-      // 4. Executar algoritmo de empacotamento
       const results = this.algorithm.packOrder(order, availableBoxes);
 
-      // 5. Upsert resultados de empacotamento (deletar existentes e criar novos)
       await this.packagingResultRepository.upsertMany(results);
-
-      // 6. Mapear para DTO de resposta
       const packagedOrder: PackagedOrderDto =
         this.mapper.mapResultsToPackagedOrder(orderDto.pedido_id, results);
       response.pedidos.push(packagedOrder);
