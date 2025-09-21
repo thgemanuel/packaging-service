@@ -38,7 +38,6 @@ describe('PackagingResultMapper', () => {
 
   describe('fromEntityToSchema', () => {
     it('should convert PackagingResult entity to PackagingResultTypeORM schema', () => {
-      // Arrange
       const box = new Box(
         'BOX001',
         BoxType.CAIXA_1,
@@ -66,10 +65,8 @@ describe('PackagingResultMapper', () => {
 
       const orderSchema = { id: 'order-id', orderId: 'ORDER001' };
 
-      // Act
       const schemaResult = mapper.fromEntityToSchema(result, orderSchema);
 
-      // Assert
       expect(schemaResult).toBeInstanceOf(PackagingResultTypeORM);
       expect(schemaResult.id).toBe('result-id');
       expect(schemaResult.boxType).toBe(BoxType.CAIXA_1);
@@ -80,7 +77,6 @@ describe('PackagingResultMapper', () => {
     });
 
     it('should convert PackagingResult entity to schema without order', () => {
-      // Arrange
       const box = new Box(
         'BOX001',
         BoxType.CAIXA_1,
@@ -102,10 +98,8 @@ describe('PackagingResultMapper', () => {
       result.insertedAt = new Date('2023-01-01');
       result.updatedAt = new Date('2023-01-02');
 
-      // Act
       const schemaResult = mapper.fromEntityToSchema(result);
 
-      // Assert
       expect(schemaResult).toBeInstanceOf(PackagingResultTypeORM);
       expect(schemaResult.id).toBe('result-id');
       expect(schemaResult.boxType).toBe(BoxType.CAIXA_1);
@@ -116,7 +110,6 @@ describe('PackagingResultMapper', () => {
     });
 
     it('should handle PackagingResult without box', () => {
-      // Arrange
       const packagedProducts: PackagedProduct[] = [
         {
           productId: 'PROD001',
@@ -133,10 +126,8 @@ describe('PackagingResultMapper', () => {
       result.insertedAt = new Date('2023-01-01');
       result.updatedAt = new Date('2023-01-02');
 
-      // Act
       const schemaResult = mapper.fromEntityToSchema(result);
 
-      // Assert
       expect(schemaResult).toBeInstanceOf(PackagingResultTypeORM);
       expect(schemaResult.id).toBe('result-id');
       expect(schemaResult.boxType).toBeNull();
@@ -145,25 +136,20 @@ describe('PackagingResultMapper', () => {
     });
 
     it('should return null when result is null', () => {
-      // Act
       const result = mapper.fromEntityToSchema(null);
 
-      // Assert
       expect(result).toBeNull();
     });
 
     it('should return null when result is undefined', () => {
-      // Act
       const result = mapper.fromEntityToSchema(undefined);
 
-      // Assert
       expect(result).toBeNull();
     });
   });
 
   describe('fromSchemaToEntity', () => {
     it('should convert PackagingResultTypeORM schema to PackagingResult entity', () => {
-      // Arrange
       const packagedProducts: PackagedProduct[] = [
         {
           productId: 'PROD001',
@@ -182,13 +168,11 @@ describe('PackagingResultMapper', () => {
       resultSchema.insertedAt = new Date('2023-01-01');
       resultSchema.updatedAt = new Date('2023-01-02');
 
-      // Act
       const result = mapper.fromSchemaToEntity(resultSchema);
 
-      // Assert
       expect(result).toBeInstanceOf(PackagingResult);
       expect(result.id).toBe('result-id');
-      expect(result.box).toBeNull(); // Box is not loaded in this simplified version
+      expect(result.box).toBeNull();
       expect(result.products).toEqual(packagedProducts);
       expect(result.observation).toBe('Test observation');
       expect(result.insertedAt).toEqual(new Date('2023-01-01'));
@@ -196,7 +180,6 @@ describe('PackagingResultMapper', () => {
     });
 
     it('should convert schema to entity with loadRelations flag', () => {
-      // Arrange
       const packagedProducts: PackagedProduct[] = [
         {
           productId: 'PROD001',
@@ -211,19 +194,16 @@ describe('PackagingResultMapper', () => {
       resultSchema.insertedAt = new Date('2023-01-01');
       resultSchema.updatedAt = new Date('2023-01-02');
 
-      // Act
       const result = mapper.fromSchemaToEntity(resultSchema);
 
-      // Assert
       expect(result).toBeInstanceOf(PackagingResult);
       expect(result.id).toBe('result-id');
-      expect(result.box).toBeNull(); // Box is not loaded in this simplified version
+      expect(result.box).toBeNull();
       expect(result.products).toEqual(packagedProducts);
       expect(result.observation).toBeNull();
     });
 
     it('should handle null productsJson', () => {
-      // Arrange
       const resultSchema = new PackagingResultTypeORM();
       resultSchema.id = 'result-id';
       resultSchema.boxType = BoxType.CAIXA_1;
@@ -232,28 +212,22 @@ describe('PackagingResultMapper', () => {
       resultSchema.insertedAt = new Date('2023-01-01');
       resultSchema.updatedAt = new Date('2023-01-02');
 
-      // Act
       const result = mapper.fromSchemaToEntity(resultSchema);
 
-      // Assert
       expect(result).toBeInstanceOf(PackagingResult);
       expect(result.products).toEqual([]);
       expect(result.observation).toBe('No products');
     });
 
     it('should return null when resultSchema is null', () => {
-      // Act
       const result = mapper.fromSchemaToEntity(null);
 
-      // Assert
       expect(result).toBeNull();
     });
 
     it('should return null when resultSchema is undefined', () => {
-      // Act
       const result = mapper.fromSchemaToEntity(undefined);
 
-      // Assert
       expect(result).toBeNull();
     });
   });

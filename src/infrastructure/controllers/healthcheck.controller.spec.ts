@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
 import { HealthCheckService, TypeOrmHealthIndicator } from '@nestjs/terminus';
-// No external dependencies needed
 import { HealthcheckController } from './healthcheck.controller';
 
 describe('HealthcheckController', () => {
@@ -16,8 +15,6 @@ describe('HealthcheckController', () => {
     pingCheck: jest.fn(),
   };
 
-  // No PubSub client needed
-
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       controllers: [HealthcheckController],
@@ -27,7 +24,6 @@ describe('HealthcheckController', () => {
       .useValue(mockHealthCheckService)
       .overrideProvider(TypeOrmHealthIndicator)
       .useValue(mockTypeOrmHealthIndicator)
-      // No PubSub provider to override
       .compile();
 
     app = moduleFixture.createNestApplication();

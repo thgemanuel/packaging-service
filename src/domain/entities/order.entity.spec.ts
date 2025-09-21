@@ -59,7 +59,6 @@ describe('Order', () => {
       order.addProduct(product1);
       const products = order.products;
 
-      // Modifying the returned array should not affect the original
       products.push(product2);
       expect(order.productCount).toBe(1);
     });
@@ -176,14 +175,14 @@ describe('Order', () => {
 
   describe('getProductsSortedByVolume', () => {
     beforeEach(() => {
-      order.addProduct(product1); // Volume: 6000
-      order.addProduct(product2); // Volume: 13125
+      order.addProduct(product1);
+      order.addProduct(product2);
     });
 
     it('should return products sorted by volume (descending)', () => {
       const sortedProducts = order.getProductsSortedByVolume();
 
-      expect(sortedProducts[0]).toBe(product2); // Larger volume first
+      expect(sortedProducts[0]).toBe(product2);
       expect(sortedProducts[1]).toBe(product1);
     });
 
@@ -197,29 +196,29 @@ describe('Order', () => {
 
   describe('getProductsSortedByDimension', () => {
     beforeEach(() => {
-      order.addProduct(product1); // Height: 10
-      order.addProduct(product2); // Height: 15
+      order.addProduct(product1);
+      order.addProduct(product2);
     });
 
     it('should return products sorted by height (descending)', () => {
       const sortedProducts = order.getProductsSortedByDimension('height');
 
-      expect(sortedProducts[0]).toBe(product2); // Height: 15
-      expect(sortedProducts[1]).toBe(product1); // Height: 10
+      expect(sortedProducts[0]).toBe(product2);
+      expect(sortedProducts[1]).toBe(product1);
     });
 
     it('should return products sorted by width (descending)', () => {
       const sortedProducts = order.getProductsSortedByDimension('width');
 
-      expect(sortedProducts[0]).toBe(product2); // Width: 25
-      expect(sortedProducts[1]).toBe(product1); // Width: 20
+      expect(sortedProducts[0]).toBe(product2);
+      expect(sortedProducts[1]).toBe(product1);
     });
 
     it('should return products sorted by length (descending)', () => {
       const sortedProducts = order.getProductsSortedByDimension('length');
 
-      expect(sortedProducts[0]).toBe(product2); // Length: 35
-      expect(sortedProducts[1]).toBe(product1); // Length: 30
+      expect(sortedProducts[0]).toBe(product2);
+      expect(sortedProducts[1]).toBe(product1);
     });
   });
 

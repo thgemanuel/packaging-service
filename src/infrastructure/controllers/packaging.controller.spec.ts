@@ -31,7 +31,6 @@ describe('PackagingController', () => {
 
   describe('processOrders', () => {
     it('should process orders successfully', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -66,16 +65,13 @@ describe('PackagingController', () => {
 
       useCase.execute.mockResolvedValue(expectedResponse);
 
-      // Act
       const result = await controller.processOrders(requestDto);
 
-      // Assert
       expect(useCase.execute).toHaveBeenCalledWith(requestDto);
       expect(result).toEqual(expectedResponse);
     });
 
     it('should process multiple orders successfully', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -124,16 +120,13 @@ describe('PackagingController', () => {
 
       useCase.execute.mockResolvedValue(expectedResponse);
 
-      // Act
       const result = await controller.processOrders(requestDto);
 
-      // Assert
       expect(useCase.execute).toHaveBeenCalledWith(requestDto);
       expect(result).toEqual(expectedResponse);
     });
 
     it('should handle empty orders list', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [],
       };
@@ -144,16 +137,13 @@ describe('PackagingController', () => {
 
       useCase.execute.mockResolvedValue(expectedResponse);
 
-      // Act
       const result = await controller.processOrders(requestDto);
 
-      // Assert
       expect(useCase.execute).toHaveBeenCalledWith(requestDto);
       expect(result).toEqual(expectedResponse);
     });
 
     it('should handle orders with products that do not fit', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -189,16 +179,13 @@ describe('PackagingController', () => {
 
       useCase.execute.mockResolvedValue(expectedResponse);
 
-      // Act
       const result = await controller.processOrders(requestDto);
 
-      // Assert
       expect(useCase.execute).toHaveBeenCalledWith(requestDto);
       expect(result).toEqual(expectedResponse);
     });
 
     it('should propagate use case errors', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -216,7 +203,6 @@ describe('PackagingController', () => {
       const error = new Error('Database connection failed');
       useCase.execute.mockRejectedValue(error);
 
-      // Act & Assert
       await expect(controller.processOrders(requestDto)).rejects.toThrow(
         'Database connection failed',
       );
@@ -224,7 +210,6 @@ describe('PackagingController', () => {
     });
 
     it('should handle validation errors from use case', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -242,14 +227,12 @@ describe('PackagingController', () => {
       const error = new Error('Invalid dimensions: height must be positive');
       useCase.execute.mockRejectedValue(error);
 
-      // Act & Assert
       await expect(controller.processOrders(requestDto)).rejects.toThrow(
         'Invalid dimensions: height must be positive',
       );
     });
 
     it('should handle orders with multiple products in single box', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -284,16 +267,13 @@ describe('PackagingController', () => {
 
       useCase.execute.mockResolvedValue(expectedResponse);
 
-      // Act
       const result = await controller.processOrders(requestDto);
 
-      // Assert
       expect(useCase.execute).toHaveBeenCalledWith(requestDto);
       expect(result).toEqual(expectedResponse);
     });
 
     it('should handle orders with products split across multiple boxes', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -332,10 +312,8 @@ describe('PackagingController', () => {
 
       useCase.execute.mockResolvedValue(expectedResponse);
 
-      // Act
       const result = await controller.processOrders(requestDto);
 
-      // Assert
       expect(useCase.execute).toHaveBeenCalledWith(requestDto);
       expect(result).toEqual(expectedResponse);
     });

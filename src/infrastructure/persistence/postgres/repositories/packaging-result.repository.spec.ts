@@ -62,7 +62,6 @@ describe('PackagingResultRepositoryTypeORM', () => {
 
   describe('findByOrderId', () => {
     it('should find packaging results by order ID', async () => {
-      // Arrange
       const orderId = 'ORDER001';
       const mockSchema = {
         id: 'result-id',
@@ -83,10 +82,8 @@ describe('PackagingResultRepositoryTypeORM', () => {
       typeOrmRepository.find.mockResolvedValue([mockSchema]);
       mapper.fromSchemaToEntity.mockReturnValue(mockEntity);
 
-      // Act
       const result = await repository.findByOrderId(orderId);
 
-      // Assert
       expect(typeOrmRepository.find).toHaveBeenCalledWith({
         where: { order: { orderId } },
         relations: ['order', 'box'],
@@ -97,14 +94,11 @@ describe('PackagingResultRepositoryTypeORM', () => {
     });
 
     it('should return empty array when no results found', async () => {
-      // Arrange
       const orderId = 'NONEXISTENT';
       typeOrmRepository.find.mockResolvedValue([]);
 
-      // Act
       const result = await repository.findByOrderId(orderId);
 
-      // Assert
       expect(result).toEqual([]);
       expect(mapper.fromSchemaToEntity).not.toHaveBeenCalled();
     });
@@ -112,7 +106,6 @@ describe('PackagingResultRepositoryTypeORM', () => {
 
   describe('save', () => {
     it('should save packaging result successfully', async () => {
-      // Arrange
       const orderId = 'ORDER001';
       const mockEntity = PackagingResult.createSuccessful(
         orderId,
@@ -135,10 +128,8 @@ describe('PackagingResultRepositoryTypeORM', () => {
       typeOrmRepository.save.mockResolvedValue(mockResultSchema);
       mapper.fromSchemaToEntity.mockReturnValue(mockEntity);
 
-      // Act
       const result = await repository.save(mockEntity);
 
-      // Assert
       expect(orderRepository.findOne).toHaveBeenCalledWith({
         where: { orderId },
       });
@@ -153,7 +144,6 @@ describe('PackagingResultRepositoryTypeORM', () => {
     });
 
     it('should throw error when order not found', async () => {
-      // Arrange
       const orderId = 'NONEXISTENT';
       const mockEntity = PackagingResult.createSuccessful(
         orderId,
@@ -163,7 +153,6 @@ describe('PackagingResultRepositoryTypeORM', () => {
 
       orderRepository.findOne.mockResolvedValue(null);
 
-      // Act & Assert
       await expect(repository.save(mockEntity)).rejects.toThrow(
         `Order with ID ${orderId} not found`,
       );
@@ -172,7 +161,6 @@ describe('PackagingResultRepositoryTypeORM', () => {
 
   describe('saveMany', () => {
     it('should save multiple packaging results successfully', async () => {
-      // Arrange
       const orderId = 'ORDER001';
       const mockEntities = [
         PackagingResult.createSuccessful(
@@ -217,10 +205,8 @@ describe('PackagingResultRepositoryTypeORM', () => {
         .mockReturnValueOnce(mockEntities[0])
         .mockReturnValueOnce(mockEntities[1]);
 
-      // Act
       const result = await repository.saveMany(mockEntities);
 
-      // Assert
       expect(orderRepository.findOne).toHaveBeenCalledTimes(2);
       expect(mapper.fromEntityToSchema).toHaveBeenCalledTimes(2);
       expect(typeOrmRepository.save).toHaveBeenCalledWith(mockResultSchemas, {
@@ -230,7 +216,6 @@ describe('PackagingResultRepositoryTypeORM', () => {
     });
 
     it('should throw error when any order not found', async () => {
-      // Arrange
       const orderId = 'NONEXISTENT';
       const mockEntities = [
         PackagingResult.createSuccessful(
@@ -242,7 +227,6 @@ describe('PackagingResultRepositoryTypeORM', () => {
 
       orderRepository.findOne.mockResolvedValue(null);
 
-      // Act & Assert
       await expect(repository.saveMany(mockEntities)).rejects.toThrow(
         `Order with ID ${orderId} not found`,
       );
@@ -251,7 +235,6 @@ describe('PackagingResultRepositoryTypeORM', () => {
 
   describe('upsert', () => {
     it('should upsert packaging result successfully', async () => {
-      // Arrange
       const orderId = 'ORDER001';
       const mockEntity = PackagingResult.createSuccessful(
         orderId,
@@ -279,10 +262,8 @@ describe('PackagingResultRepositoryTypeORM', () => {
       typeOrmRepository.findOne.mockResolvedValue(mockResultSchema);
       mapper.fromSchemaToEntity.mockReturnValue(mockEntity);
 
-      // Act
       const result = await repository.upsert(mockEntity);
 
-      // Assert
       expect(orderRepository.findOne).toHaveBeenCalledWith({
         where: { orderId },
       });
@@ -298,7 +279,6 @@ describe('PackagingResultRepositoryTypeORM', () => {
     });
 
     it('should return original entity when upsert has no identifiers', async () => {
-      // Arrange
       const orderId = 'ORDER001';
       const mockEntity = PackagingResult.createSuccessful(
         orderId,
@@ -324,17 +304,14 @@ describe('PackagingResultRepositoryTypeORM', () => {
       mapper.fromEntityToSchema.mockReturnValue(mockResultSchema);
       typeOrmRepository.upsert.mockResolvedValue(mockUpsertResult as any);
 
-      // Act
       const result = await repository.upsert(mockEntity);
 
-      // Assert
       expect(result).toBe(mockEntity);
     });
   });
 
   describe('upsertMany', () => {
     it('should upsert multiple packaging results successfully', async () => {
-      // Arrange
       const orderId = 'ORDER001';
       const mockEntities = [
         PackagingResult.createSuccessful(
@@ -384,10 +361,8 @@ describe('PackagingResultRepositoryTypeORM', () => {
         .mockReturnValueOnce(mockEntities[0])
         .mockReturnValueOnce(mockEntities[1]);
 
-      // Act
       const result = await repository.upsertMany(mockEntities);
 
-      // Assert
       expect(orderRepository.findOne).toHaveBeenCalledTimes(2);
       expect(mapper.fromEntityToSchema).toHaveBeenCalledTimes(2);
       expect(typeOrmRepository.upsert).toHaveBeenCalledWith(mockResultSchemas, {
@@ -395,14 +370,13 @@ describe('PackagingResultRepositoryTypeORM', () => {
         skipUpdateIfNoValuesChanged: true,
       });
       expect(typeOrmRepository.find).toHaveBeenCalledWith({
-        where: { id: expect.any(Object) }, // Using expect.any(Object) for In(ids)
+        where: { id: expect.any(Object) },
         relations: ['order', 'box'],
       });
       expect(result).toEqual(mockEntities);
     });
 
     it('should return original entities when upsert has no identifiers', async () => {
-      // Arrange
       const orderId = 'ORDER001';
       const mockEntities = [
         PackagingResult.createSuccessful(
@@ -430,10 +404,8 @@ describe('PackagingResultRepositoryTypeORM', () => {
       mapper.fromEntityToSchema.mockReturnValue(mockResultSchema);
       typeOrmRepository.upsert.mockResolvedValue(mockUpsertResult as any);
 
-      // Act
       const result = await repository.upsertMany(mockEntities);
 
-      // Assert
       expect(result).toBe(mockEntities);
     });
   });

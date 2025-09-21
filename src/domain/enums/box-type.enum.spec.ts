@@ -96,7 +96,6 @@ describe('BoxTypeHelper', () => {
     });
 
     it('should consider rotations when finding best fit', () => {
-      // Product that fits in Caixa 1 when rotated
       const productDimensions = new Dimensions(35, 25, 70);
       const bestBox = BoxTypeHelper.findBestBoxType(productDimensions);
 
@@ -112,7 +111,6 @@ describe('BoxTypeHelper', () => {
 
       expect(compatibleBoxes).toContain(BoxType.CAIXA_1);
       expect(compatibleBoxes).toContain(BoxType.CAIXA_3);
-      // Caixa 2 (50x50x40) cannot fit this product (25x35x70) because 70 > 40
     });
 
     it('should return only larger boxes for big products', () => {
@@ -140,7 +138,6 @@ describe('BoxTypeHelper', () => {
 
       expect(compatibleBoxes[0]).toBe(BoxType.CAIXA_1);
       expect(compatibleBoxes[1]).toBe(BoxType.CAIXA_3);
-      // Caixa 2 is not included because it cannot fit this product
     });
   });
 

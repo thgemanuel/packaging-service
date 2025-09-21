@@ -206,12 +206,10 @@ describe('PackagingMapper', () => {
       expect(result.pedido_id).toBe(123);
       expect(result.caixas).toHaveLength(2);
 
-      // First result should be successful
       expect(result.caixas[0].caixa_id).toBe('Caixa 1');
       expect(result.caixas[0].produtos).toEqual(['PS5']);
       expect(result.caixas[0].observacao).toBeUndefined();
 
-      // Second result should be failed
       expect(result.caixas[1].caixa_id).toBeNull();
       expect(result.caixas[1].produtos).toEqual(['TOO_LARGE']);
       expect(result.caixas[1].observacao).toBe(
@@ -264,7 +262,7 @@ describe('PackagingMapper', () => {
           {
             produto_id: 'INVALID',
             dimensoes: {
-              altura: -1, // Invalid dimension
+              altura: -1,
               largura: 10,
               comprimento: 25,
             },
@@ -284,7 +282,7 @@ describe('PackagingMapper', () => {
             dimensoes: { altura: 10, largura: 20, comprimento: 30 },
           },
           {
-            produto_id: 'PROD1', // Duplicate product ID
+            produto_id: 'PROD1',
             dimensoes: { altura: 15, largura: 25, comprimento: 35 },
           },
         ],

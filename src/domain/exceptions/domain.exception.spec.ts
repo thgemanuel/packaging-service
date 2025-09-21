@@ -40,7 +40,7 @@ describe('DomainException', () => {
       const exception = new DomainException(errors);
 
       const returnedErrors = exception.getErrors();
-      expect(returnedErrors).toBe(errors); // Should be the same reference
+      expect(returnedErrors).toBe(errors);
     });
   });
 });

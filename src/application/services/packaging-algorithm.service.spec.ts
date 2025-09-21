@@ -18,11 +18,10 @@ describe('PackagingAlgorithmService', () => {
 
     service = module.get<PackagingAlgorithmService>(PackagingAlgorithmService);
 
-    // Create available boxes
     availableBoxes = [
-      Box.createFromType(BoxType.CAIXA_1), // 30x40x80
-      Box.createFromType(BoxType.CAIXA_2), // 50x50x40
-      Box.createFromType(BoxType.CAIXA_3), // 50x80x60
+      Box.createFromType(BoxType.CAIXA_1),
+      Box.createFromType(BoxType.CAIXA_2),
+      Box.createFromType(BoxType.CAIXA_3),
     ];
   });
 
@@ -43,7 +42,7 @@ describe('PackagingAlgorithmService', () => {
 
       expect(results).toHaveLength(1);
       expect(results[0].orderId).toBe('ORDER001');
-      expect(results[0].boxType).toBe(BoxType.CAIXA_1); // Should fit in smallest box
+      expect(results[0].boxType).toBe(BoxType.CAIXA_1);
       expect(results[0].products[0].productId).toBe('PS5');
       expect(results[0].observation).toBeNull();
     });
@@ -73,9 +72,9 @@ describe('PackagingAlgorithmService', () => {
 
     it('should pack multiple products in multiple boxes when needed', () => {
       const products = [
-        new Product('LARGE1', new Dimensions(40, 30, 70)), // Fits in Caixa 1
-        new Product('LARGE2', new Dimensions(45, 45, 35)), // Fits in Caixa 2
-        new Product('LARGE3', new Dimensions(45, 70, 50)), // Fits in Caixa 3
+        new Product('LARGE1', new Dimensions(40, 30, 70)),
+        new Product('LARGE2', new Dimensions(45, 45, 35)),
+        new Product('LARGE3', new Dimensions(45, 70, 50)),
       ];
       const order = new Order('ORDER001', products);
 
@@ -98,14 +97,12 @@ describe('PackagingAlgorithmService', () => {
 
       expect(results).toHaveLength(2);
 
-      // One successful result
       const successResult = results.find((r) =>
         r.products.some((p) => p.productId === 'FITS'),
       );
       expect(successResult).toBeDefined();
       expect(successResult!.observation).toBeNull();
 
-      // One failed result
       const failedResult = results.find((r) =>
         r.products.some((p) => p.productId === 'TOO_LARGE'),
       );
@@ -135,33 +132,30 @@ describe('PackagingAlgorithmService', () => {
 
     it('should sort products by volume (largest first)', () => {
       const products = [
-        new Product('SMALL', new Dimensions(5, 5, 5)), // Volume: 125
-        new Product('MEDIUM', new Dimensions(10, 10, 10)), // Volume: 1000
-        new Product('LARGE', new Dimensions(20, 20, 20)), // Volume: 8000
+        new Product('SMALL', new Dimensions(5, 5, 5)),
+        new Product('MEDIUM', new Dimensions(10, 10, 10)),
+        new Product('LARGE', new Dimensions(20, 20, 20)),
       ];
       const order = new Order('ORDER001', products);
 
       const results = service.packOrder(order, availableBoxes);
 
       expect(results).toHaveLength(1);
-      // Products should be packed in order: LARGE, MEDIUM, SMALL
       expect(results[0].products[0].productId).toBe('LARGE');
       expect(results[0].products[1].productId).toBe('MEDIUM');
       expect(results[0].products[2].productId).toBe('SMALL');
     });
 
     it('should respect capacity utilization limit', () => {
-      // Create products that individually fit but together exceed the 90% limit
       const products = [
-        new Product('PROD1', new Dimensions(25, 35, 70)), // Volume: 61250
-        new Product('PROD2', new Dimensions(25, 35, 70)), // Volume: 61250
-        new Product('PROD3', new Dimensions(25, 35, 70)), // Volume: 61250
+        new Product('PROD1', new Dimensions(25, 35, 70)),
+        new Product('PROD2', new Dimensions(25, 35, 70)),
+        new Product('PROD3', new Dimensions(25, 35, 70)),
       ];
       const order = new Order('ORDER001', products);
 
       const results = service.packOrder(order, availableBoxes);
 
-      // Should split into multiple boxes due to capacity limit
       expect(results.length).toBeGreaterThan(1);
     });
 
@@ -172,7 +166,7 @@ describe('PackagingAlgorithmService', () => {
       const results = service.packOrder(order, availableBoxes);
 
       expect(results).toHaveLength(1);
-      expect(results[0].boxType).toBe(BoxType.CAIXA_1); // Smallest box that fits
+      expect(results[0].boxType).toBe(BoxType.CAIXA_1);
     });
 
     it('should handle empty available boxes array', () => {
@@ -208,10 +202,7 @@ describe('PackagingAlgorithmService', () => {
 
   describe('capacity utilization', () => {
     it('should not exceed 90% capacity utilization', () => {
-      // Create products that would exceed 90% of Caixa 1 volume (96,000)
-      const products = [
-        new Product('PROD1', new Dimensions(30, 40, 80)), // Volume: 96,000 (100% of Caixa 1)
-      ];
+      const products = [new Product('PROD1', new Dimensions(30, 40, 80))];
       const order = new Order('ORDER001', products);
 
       const results = service.packOrder(order, availableBoxes);
@@ -221,17 +212,15 @@ describe('PackagingAlgorithmService', () => {
     });
 
     it('should split products when they exceed capacity limit', () => {
-      // Create two products that together exceed 90% of any single box
       const products = [
-        new Product('PROD1', new Dimensions(25, 35, 70)), // Volume: 61,250
-        new Product('PROD2', new Dimensions(25, 35, 70)), // Volume: 61,250
-        new Product('PROD3', new Dimensions(25, 35, 70)), // Volume: 61,250
+        new Product('PROD1', new Dimensions(25, 35, 70)),
+        new Product('PROD2', new Dimensions(25, 35, 70)),
+        new Product('PROD3', new Dimensions(25, 35, 70)),
       ];
       const order = new Order('ORDER001', products);
 
       const results = service.packOrder(order, availableBoxes);
 
-      // Should be split into multiple boxes
       expect(results.length).toBeGreaterThan(1);
     });
   });

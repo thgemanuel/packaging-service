@@ -55,7 +55,7 @@ export class BoxTypeHelper {
   static findBestBoxType(productDimensions: Dimensions): BoxType | null {
     const availableBoxes = this.getAllBoxTypesWithDimensions()
       .filter((box) => productDimensions.canFitInside(box.dimensions))
-      .sort((a, b) => a.dimensions.getVolume() - b.dimensions.getVolume()); // Sort by volume (smallest first)
+      .sort((a, b) => a.dimensions.getVolume() - b.dimensions.getVolume());
 
     return availableBoxes.length > 0 ? availableBoxes[0].type : null;
   }

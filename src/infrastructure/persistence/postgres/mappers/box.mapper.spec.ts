@@ -18,7 +18,6 @@ describe('BoxMapper', () => {
 
   describe('fromEntityToSchema', () => {
     it('should convert Box entity to BoxTypeORM schema', () => {
-      // Arrange
       const box = new Box(
         'BOX001',
         BoxType.CAIXA_1,
@@ -29,10 +28,8 @@ describe('BoxMapper', () => {
       box.insertedAt = new Date('2023-01-01');
       box.updatedAt = new Date('2023-01-02');
 
-      // Act
       const result = mapper.fromEntityToSchema(box);
 
-      // Assert
       expect(result).toBeInstanceOf(BoxTypeORM);
       expect(result.boxId).toBe('BOX001');
       expect(result.boxType).toBe(BoxType.CAIXA_1);
@@ -46,25 +43,20 @@ describe('BoxMapper', () => {
     });
 
     it('should return null when box is null', () => {
-      // Act
       const result = mapper.fromEntityToSchema(null);
 
-      // Assert
       expect(result).toBeNull();
     });
 
     it('should return null when box is undefined', () => {
-      // Act
       const result = mapper.fromEntityToSchema(undefined);
 
-      // Assert
       expect(result).toBeNull();
     });
   });
 
   describe('fromSchemaToEntity', () => {
     it('should convert BoxTypeORM schema to Box entity', () => {
-      // Arrange
       const boxSchema = new BoxTypeORM();
       boxSchema.id = 'box-id';
       boxSchema.boxId = 'BOX001';
@@ -76,10 +68,8 @@ describe('BoxMapper', () => {
       boxSchema.insertedAt = new Date('2023-01-01');
       boxSchema.updatedAt = new Date('2023-01-02');
 
-      // Act
       const result = mapper.fromSchemaToEntity(boxSchema);
 
-      // Assert
       expect(result).toBeInstanceOf(Box);
       expect(result.boxId).toBe('BOX001');
       expect(result.boxType).toBe(BoxType.CAIXA_1);
@@ -93,7 +83,6 @@ describe('BoxMapper', () => {
     });
 
     it('should handle string dimensions correctly', () => {
-      // Arrange
       const boxSchema = new BoxTypeORM();
       boxSchema.id = 'box-id';
       boxSchema.boxId = 'BOX001';
@@ -105,28 +94,22 @@ describe('BoxMapper', () => {
       boxSchema.insertedAt = new Date('2023-01-01');
       boxSchema.updatedAt = new Date('2023-01-02');
 
-      // Act
       const result = mapper.fromSchemaToEntity(boxSchema);
 
-      // Assert
       expect(result.dimensions.height).toBe(50);
       expect(result.dimensions.width).toBe(50);
       expect(result.dimensions.length).toBe(40);
     });
 
     it('should return null when boxSchema is null', () => {
-      // Act
       const result = mapper.fromSchemaToEntity(null);
 
-      // Assert
       expect(result).toBeNull();
     });
 
     it('should return null when boxSchema is undefined', () => {
-      // Act
       const result = mapper.fromSchemaToEntity(undefined);
 
-      // Assert
       expect(result).toBeNull();
     });
   });

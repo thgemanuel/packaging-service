@@ -50,15 +50,14 @@ export class Dimensions {
     const { height, width, length } = this;
 
     return [
-      new Dimensions(height, width, length), // Original
-      new Dimensions(height, length, width), // Rotate around height
-      new Dimensions(width, height, length), // Rotate around length
-      new Dimensions(width, length, height), // Rotate around width
-      new Dimensions(length, height, width), // Rotate around width (different)
-      new Dimensions(length, width, height), // Rotate around height (different)
+      new Dimensions(height, width, length),
+      new Dimensions(height, length, width),
+      new Dimensions(width, height, length),
+      new Dimensions(width, length, height),
+      new Dimensions(length, height, width),
+      new Dimensions(length, width, height),
     ].filter(
       (dims, index, array) =>
-        // Remove duplicates (for cases where dimensions are equal)
         array.findIndex(
           (d) =>
             d.height === dims.height &&
@@ -85,7 +84,6 @@ export class Dimensions {
       return null;
     }
 
-    // Return the rotation that maximizes volume utilization
     return validRotations.reduce((best, current) => {
       const bestUtilization = best.getVolume() / container.getVolume();
       const currentUtilization = current.getVolume() / container.getVolume();

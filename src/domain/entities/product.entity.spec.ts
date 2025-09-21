@@ -57,7 +57,7 @@ describe('Product', () => {
 
   describe('getVolume', () => {
     it('should return correct volume', () => {
-      expect(product.getVolume()).toBe(6000); // 10 * 20 * 30
+      expect(product.getVolume()).toBe(6000);
     });
   });
 

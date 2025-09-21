@@ -33,7 +33,6 @@ export class PackagingResultRepositoryTypeORM
   }
 
   async save(result: PackagingResult): Promise<PackagingResult> {
-    // Find the order by orderId to establish the relation
     const orderSchema = await this.orderRepository.findOne({
       where: { orderId: result.orderId },
     });
@@ -56,7 +55,6 @@ export class PackagingResultRepositoryTypeORM
     const resultSchemas: PackagingResultTypeORM[] = [];
 
     for (const result of results) {
-      // Find the order by orderId to establish the relation
       const orderSchema = await this.orderRepository.findOne({
         where: { orderId: result.orderId },
       });
@@ -79,7 +77,6 @@ export class PackagingResultRepositoryTypeORM
   }
 
   async upsert(result: PackagingResult): Promise<PackagingResult> {
-    // Find the order by orderId to establish the relation
     const orderSchema = await this.orderRepository.findOne({
       where: { orderId: result.orderId },
     });
@@ -93,13 +90,11 @@ export class PackagingResultRepositoryTypeORM
       orderSchema,
     );
 
-    // Use upsert to insert or update based on primary key
     const upsertResult = await this.typeOrmRepository.upsert(resultSchema, {
-      conflictPaths: ['id'], // Assuming 'id' is the primary key
+      conflictPaths: ['id'],
       skipUpdateIfNoValuesChanged: true,
     });
 
-    // If upsert returns identifiers, fetch the full entity
     if (upsertResult.identifiers && upsertResult.identifiers.length > 0) {
       const savedSchema = await this.typeOrmRepository.findOne({
         where: { id: upsertResult.identifiers[0].id },
@@ -117,7 +112,6 @@ export class PackagingResultRepositoryTypeORM
     const resultSchemas: PackagingResultTypeORM[] = [];
 
     for (const result of results) {
-      // Find the order by orderId to establish the relation
       const orderSchema = await this.orderRepository.findOne({
         where: { orderId: result.orderId },
       });
@@ -131,13 +125,11 @@ export class PackagingResultRepositoryTypeORM
       );
     }
 
-    // Use upsert to insert or update based on primary key
     const upsertResult = await this.typeOrmRepository.upsert(resultSchemas, {
-      conflictPaths: ['id'], // Assuming 'id' is the primary key
+      conflictPaths: ['id'],
       skipUpdateIfNoValuesChanged: true,
     });
 
-    // If upsert returns identifiers, fetch the full entities
     if (upsertResult.identifiers && upsertResult.identifiers.length > 0) {
       const ids = upsertResult.identifiers.map((identifier) => identifier.id);
       const savedSchemas = await this.typeOrmRepository.find({

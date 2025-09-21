@@ -11,7 +11,6 @@ interface BoxAllocation {
 
 @Injectable()
 export class PackagingAlgorithmService {
-  // Capacity factor to avoid over-optimistic packing by volume only
   private static readonly CAPACITY_UTILIZATION_LIMIT = 0.9;
 
   /**
@@ -21,10 +20,8 @@ export class PackagingAlgorithmService {
   packOrder(order: Order, availableBoxes: Box[]): PackagingResult[] {
     order.validateForProcessing();
 
-    // Sort products by volume descending (largest first)
     const products: Product[] = order.getProductsSortedByVolume();
 
-    // Validate each product fits at least in one box individually
     const notFittableProducts: Product[] = [];
     const fittableProducts: Product[] = [];
 
@@ -39,7 +36,6 @@ export class PackagingAlgorithmService {
       }
     }
 
-    // If there are products that cannot fit in any box, produce a failure result for them
     const results: PackagingResult[] = [];
     if (notFittableProducts.length > 0) {
       results.push(
@@ -55,11 +51,9 @@ export class PackagingAlgorithmService {
       return results;
     }
 
-    // Prepare box allocations (open boxes)
     const allocations: BoxAllocation[] = [];
 
     for (const product of fittableProducts) {
-      // Try to place into first allocation where it fits and stays under utilization threshold
       let placed = false;
       for (const allocation of allocations) {
         const newProducts = [...allocation.products, product];
@@ -76,13 +70,11 @@ export class PackagingAlgorithmService {
 
       if (placed) continue;
 
-      // Open a new box: choose the smallest available box that can fit this product
       const candidateBoxes = availableBoxes
         .filter((box) => box.canFitProduct(product))
         .sort((a, b) => a.getVolume() - b.getVolume());
 
       if (candidateBoxes.length === 0) {
-        // Should not happen because we filtered fittableProducts before, but guard anyway
         results.push(
           PackagingResult.createFailed(
             order.orderId,
@@ -97,7 +89,6 @@ export class PackagingAlgorithmService {
       allocations.push({ box: selectedBox, products: [product] });
     }
 
-    // Build successful packaging results from allocations
     for (const allocation of allocations) {
       const result = PackagingResult.createSuccessful(
         order.orderId,

@@ -11,7 +11,6 @@ export function calculateAge(birthdate: string | Date): number {
   let age = today.getFullYear() - birthdateDate.getFullYear();
   const m = today.getMonth() - birthdateDate.getMonth();
 
-  // Se ainda não fez aniversário este ano, diminui um ano da idade
   if (m < 0 || (m === 0 && today.getDate() < birthdateDate.getDate())) {
     age--;
   }

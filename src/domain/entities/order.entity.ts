@@ -18,7 +18,7 @@ export class Order extends AbstractEntity {
   }
 
   get products(): Product[] {
-    return [...this._products]; // Return a copy to prevent external modification
+    return [...this._products];
   }
 
   get productCount(): number {
@@ -52,7 +52,6 @@ export class Order extends AbstractEntity {
       );
     }
 
-    // Check if product already exists
     const existingProduct = this._products.find(
       (p) => p.productId === product.productId,
     );
@@ -120,7 +119,6 @@ export class Order extends AbstractEntity {
       throw new EmptyOrderException(this._orderId);
     }
 
-    // Validate each product
     this._products.forEach((product) => {
       if (product.getVolume() <= 0) {
         throw new InvalidDimensionsException(
@@ -152,7 +150,6 @@ export class Order extends AbstractEntity {
       return;
     }
 
-    // Validate no duplicate product IDs
     const productIds = products.map((p) => p.productId);
     const uniqueProductIds = new Set(productIds);
 

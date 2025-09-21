@@ -98,7 +98,6 @@ describe('PackageMultipleOrdersUseCase', () => {
 
   describe('execute', () => {
     it('should process single order successfully', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -149,7 +148,6 @@ describe('PackageMultipleOrdersUseCase', () => {
         ],
       };
 
-      // Setup mocks
       boxRepository.findActive.mockResolvedValue(mockBoxes);
       mapper.mapOrderDtoToDomain.mockReturnValue(mockOrder);
       productRepository.upsertMany.mockResolvedValue(mockOrder.products);
@@ -160,10 +158,8 @@ describe('PackageMultipleOrdersUseCase', () => {
         expectedResponse.pedidos[0],
       );
 
-      // Act
       const result = await useCase.execute(requestDto);
 
-      // Assert
       expect(boxRepository.findActive).toHaveBeenCalledTimes(1);
       expect(mapper.mapOrderDtoToDomain).toHaveBeenCalledWith(
         requestDto.pedidos[0],
@@ -187,7 +183,6 @@ describe('PackageMultipleOrdersUseCase', () => {
     });
 
     it('should process multiple orders successfully', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -233,7 +228,6 @@ describe('PackageMultipleOrdersUseCase', () => {
         ),
       ];
 
-      // Setup mocks
       boxRepository.findActive.mockResolvedValue(mockBoxes);
       mapper.mapOrderDtoToDomain
         .mockReturnValueOnce(mockOrder1)
@@ -256,10 +250,8 @@ describe('PackageMultipleOrdersUseCase', () => {
           caixas: [{ caixa_id: 'Caixa 1', produtos: ['XBOX'] }],
         });
 
-      // Act
       const result = await useCase.execute(requestDto);
 
-      // Assert
       expect(result.pedidos).toHaveLength(2);
       expect(mapper.mapOrderDtoToDomain).toHaveBeenCalledTimes(2);
       expect(productRepository.upsertMany).toHaveBeenCalledTimes(2);
@@ -270,7 +262,6 @@ describe('PackageMultipleOrdersUseCase', () => {
     });
 
     it('should handle empty orders list', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [],
       };
@@ -278,10 +269,8 @@ describe('PackageMultipleOrdersUseCase', () => {
       const mockBoxes = [Box.createFromType(BoxType.CAIXA_1)];
       boxRepository.findActive.mockResolvedValue(mockBoxes);
 
-      // Act
       const result = await useCase.execute(requestDto);
 
-      // Assert
       expect(result.pedidos).toHaveLength(0);
       expect(mapper.mapOrderDtoToDomain).not.toHaveBeenCalled();
       expect(productRepository.upsertMany).not.toHaveBeenCalled();
@@ -292,7 +281,6 @@ describe('PackageMultipleOrdersUseCase', () => {
     });
 
     it('should propagate repository errors', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -313,19 +301,16 @@ describe('PackageMultipleOrdersUseCase', () => {
       ]);
       const error = new Error('Database connection failed');
 
-      // Setup mocks
       boxRepository.findActive.mockResolvedValue(mockBoxes);
       mapper.mapOrderDtoToDomain.mockReturnValue(mockOrder);
       productRepository.upsertMany.mockRejectedValue(error);
 
-      // Act & Assert
       await expect(useCase.execute(requestDto)).rejects.toThrow(
         'Database connection failed',
       );
     });
 
     it('should propagate algorithm service errors', async () => {
-      // Arrange
       const requestDto: PackagingRequestDto = {
         pedidos: [
           {
@@ -346,7 +331,6 @@ describe('PackageMultipleOrdersUseCase', () => {
       ]);
       const error = new Error('Packaging algorithm failed');
 
-      // Setup mocks
       boxRepository.findActive.mockResolvedValue(mockBoxes);
       mapper.mapOrderDtoToDomain.mockReturnValue(mockOrder);
       productRepository.upsertMany.mockResolvedValue(mockOrder.products);
@@ -355,7 +339,6 @@ describe('PackageMultipleOrdersUseCase', () => {
         throw error;
       });
 
-      // Act & Assert
       await expect(useCase.execute(requestDto)).rejects.toThrow(
         'Packaging algorithm failed',
       );

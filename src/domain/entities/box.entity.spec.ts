@@ -74,7 +74,7 @@ describe('Box', () => {
 
   describe('getVolume', () => {
     it('should return correct volume', () => {
-      expect(box.getVolume()).toBe(100000); // 50 * 50 * 40
+      expect(box.getVolume()).toBe(100000);
     });
   });
 

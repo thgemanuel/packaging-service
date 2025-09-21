@@ -183,7 +183,6 @@ export class PackagingResult extends AbstractEntity {
       return;
     }
 
-    // Validate no duplicate product IDs
     const productIds = products.map((p) => p.productId);
     const uniqueProductIds = new Set(productIds);
 

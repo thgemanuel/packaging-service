@@ -73,15 +73,12 @@ export class Box extends AbstractEntity {
     if (products.length === 0) return true;
     if (products.length === 1) return this.canFitProduct(products[0]);
 
-    // Simplified check: sum of volumes should not exceed box volume
-    // This is not accurate for real 3D packing but gives a basic estimation
     const totalProductVolume = products.reduce(
       (sum, product) => sum + product.getVolume(),
       0,
     );
     const boxVolume = this.getVolume();
 
-    // Use 80% efficiency factor for multiple products
     return totalProductVolume <= boxVolume * 0.8;
   }
 
@@ -165,5 +162,4 @@ export class Box extends AbstractEntity {
   }
 }
 
-// Import BoxTypeHelper after Box class to avoid circular dependency
 import { BoxTypeHelper } from '../enums/box-type.enum';

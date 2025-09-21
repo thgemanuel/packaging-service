@@ -56,7 +56,7 @@ describe('Dimensions', () => {
   describe('getVolume', () => {
     it('should calculate volume correctly', () => {
       const dimensions = new Dimensions(10, 20, 30);
-      expect(dimensions.getVolume()).toBe(6000); // 10 * 20 * 30
+      expect(dimensions.getVolume()).toBe(6000);
     });
 
     it('should calculate volume for decimal dimensions', () => {
@@ -109,10 +109,9 @@ describe('Dimensions', () => {
 
       expect(rotations).toHaveLength(6);
 
-      // Check that all rotations are valid Dimensions objects
       rotations.forEach((rotation) => {
         expect(rotation).toBeInstanceOf(Dimensions);
-        expect(rotation.getVolume()).toBe(6000); // Same volume
+        expect(rotation.getVolume()).toBe(6000);
       });
     });
 
@@ -120,7 +119,6 @@ describe('Dimensions', () => {
       const dimensions = new Dimensions(10, 10, 10);
       const rotations = dimensions.getAllRotations();
 
-      // For a cube, there should be only 1 unique rotation
       expect(rotations).toHaveLength(1);
     });
 
@@ -161,7 +159,6 @@ describe('Dimensions', () => {
       const bestFit = dimensions.getBestFitRotation(container);
 
       expect(bestFit).not.toBeNull();
-      // The best fit should be the original dimensions since they fit perfectly
       expect(bestFit!.equals(dimensions)).toBe(true);
     });
   });
