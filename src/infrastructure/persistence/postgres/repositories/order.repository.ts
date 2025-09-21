@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from '@domain/entities/order.entity';
-import { OrderRepository, ORDER_REPOSITORY_NAME } from '@domain/repositories/order.repository';
+import {
+  OrderRepository,
+  ORDER_REPOSITORY_NAME,
+} from '@domain/repositories/order.repository';
 import { OrderTypeORM } from '../schemas/order.schema';
 import { OrderMapper } from '../mappers/order.mapper';
 import { ProductMapper } from '../mappers/product.mapper';
@@ -27,7 +30,9 @@ export class OrderRepositoryTypeORM implements OrderRepository {
       where: { orderId },
       relations: ['orderProducts', 'packagingResults'],
     });
-    return orderSchema ? this.orderMapper.fromSchemaToEntity(orderSchema, true) : null;
+    return orderSchema
+      ? this.orderMapper.fromSchemaToEntity(orderSchema, true)
+      : null;
   }
 
   async save(order: Order): Promise<Order> {
@@ -40,7 +45,7 @@ export class OrderRepositoryTypeORM implements OrderRepository {
 
   async upsert(order: Order): Promise<Order> {
     const orderSchema = this.orderMapper.fromEntityToSchema(order);
-    
+
     // Try to find existing order by orderId
     const existingOrder = await this.typeOrmRepository.findOne({
       where: { orderId: order.orderId },

@@ -38,9 +38,12 @@ export class BoxTypeHelper {
   /**
    * Get all box types with their dimensions
    */
-  static getAllBoxTypesWithDimensions(): Array<{ type: BoxType; dimensions: Dimensions }> {
+  static getAllBoxTypesWithDimensions(): Array<{
+    type: BoxType;
+    dimensions: Dimensions;
+  }> {
     const dimensions = this.initializeDimensions();
-    return this.getAllBoxTypes().map(type => ({
+    return this.getAllBoxTypes().map((type) => ({
       type,
       dimensions: dimensions[type],
     }));
@@ -51,7 +54,7 @@ export class BoxTypeHelper {
    */
   static findBestBoxType(productDimensions: Dimensions): BoxType | null {
     const availableBoxes = this.getAllBoxTypesWithDimensions()
-      .filter(box => productDimensions.canFitInside(box.dimensions))
+      .filter((box) => productDimensions.canFitInside(box.dimensions))
       .sort((a, b) => a.dimensions.getVolume() - b.dimensions.getVolume()); // Sort by volume (smallest first)
 
     return availableBoxes.length > 0 ? availableBoxes[0].type : null;
@@ -62,9 +65,9 @@ export class BoxTypeHelper {
    */
   static findCompatibleBoxTypes(productDimensions: Dimensions): BoxType[] {
     return this.getAllBoxTypesWithDimensions()
-      .filter(box => productDimensions.canFitInside(box.dimensions))
+      .filter((box) => productDimensions.canFitInside(box.dimensions))
       .sort((a, b) => a.dimensions.getVolume() - b.dimensions.getVolume())
-      .map(box => box.type);
+      .map((box) => box.type);
   }
 
   /**

@@ -150,8 +150,7 @@ Verifica o status do serviço e suas dependências.
 ```json
 {
   "dependencies": [
-    { "resource_type": "postgresql", "url": "/healthcheck-postgresql" },
-    { "resource_type": "pubsub", "url": "/healthcheck-pubsub" }
+    { "resource_type": "postgresql", "url": "/healthcheck-postgresql" }
   ]
 }
 ```

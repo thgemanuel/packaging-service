@@ -16,8 +16,6 @@ import { ConfigModule } from '@nestjs/config';
     DomainModule,
     ApplicationModule,
   ],
-  providers: [
-    Logger
-  ],
+  providers: [Logger],
 })
 export class RootModule {}

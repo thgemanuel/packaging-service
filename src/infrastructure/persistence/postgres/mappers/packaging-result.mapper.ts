@@ -11,7 +11,10 @@ export class PackagingResultMapper {
     private readonly productMapper: ProductMapper,
   ) {}
 
-  fromEntityToSchema(result: PackagingResult, orderSchema?: any): PackagingResultTypeORM {
+  fromEntityToSchema(
+    result: PackagingResult,
+    orderSchema?: any,
+  ): PackagingResultTypeORM {
     if (!result) return null;
 
     const resultSchema = new PackagingResultTypeORM();
@@ -21,7 +24,7 @@ export class PackagingResultMapper {
     resultSchema.observation = result.observation;
     resultSchema.insertedAt = result.insertedAt;
     resultSchema.updatedAt = result.updatedAt;
-    
+
     // Set the order relation if provided
     if (orderSchema) {
       resultSchema.order = Promise.resolve(orderSchema);
@@ -30,7 +33,10 @@ export class PackagingResultMapper {
     return resultSchema;
   }
 
-  fromSchemaToEntity(resultSchema: PackagingResultTypeORM, loadRelations = false): PackagingResult {
+  fromSchemaToEntity(
+    resultSchema: PackagingResultTypeORM,
+    loadRelations = false,
+  ): PackagingResult {
     if (!resultSchema) return null;
 
     // Note: This is a simplified version. In a real implementation,
@@ -41,7 +47,7 @@ export class PackagingResultMapper {
       resultSchema.productsJson || [],
       resultSchema.observation,
     );
-    
+
     // Set the inherited properties
     result.id = resultSchema.id;
     result.insertedAt = resultSchema.insertedAt;

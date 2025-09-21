@@ -30,7 +30,9 @@ export class PackagingAlgorithmService {
     const fittableProducts: Product[] = [];
 
     for (const product of products) {
-      const canFitInAny = availableBoxes.some((box) => box.canFitProduct(product));
+      const canFitInAny = availableBoxes.some((box) =>
+        box.canFitProduct(product),
+      );
       if (!canFitInAny) {
         notFittableProducts.push(product);
       } else {
@@ -45,8 +47,8 @@ export class PackagingAlgorithmService {
         PackagingResult.createFailed(
           order.orderId,
           notFittableProducts,
-          'Produto não cabe em nenhuma caixa disponível.'
-        )
+          'Produto não cabe em nenhuma caixa disponível.',
+        ),
       );
     }
 
@@ -83,7 +85,11 @@ export class PackagingAlgorithmService {
       if (candidateBoxes.length === 0) {
         // Should not happen because we filtered fittableProducts before, but guard anyway
         results.push(
-          PackagingResult.createFailed(order.orderId, [product], 'Produto não cabe em nenhuma caixa disponível.')
+          PackagingResult.createFailed(
+            order.orderId,
+            [product],
+            'Produto não cabe em nenhuma caixa disponível.',
+          ),
         );
         continue;
       }
@@ -97,7 +103,7 @@ export class PackagingAlgorithmService {
       const result = PackagingResult.createSuccessful(
         order.orderId,
         allocation.box,
-        allocation.products
+        allocation.products,
       );
       results.push(result);
     }

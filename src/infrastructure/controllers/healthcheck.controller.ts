@@ -29,7 +29,6 @@ export class HealthcheckController {
     return {
       dependencies: [
         { resource_type: 'postgresql', url: '/healthcheck-postgresql' },
-        { resource_type: 'pubsub', url: '/healthcheck-pubsub' },
       ],
     };
   }

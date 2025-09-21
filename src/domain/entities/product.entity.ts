@@ -70,7 +70,10 @@ export class Product extends AbstractEntity {
 
   private setDimensions(dimensions: Dimensions): void {
     if (!dimensions) {
-      throw new InvalidDimensionsException('Dimensions cannot be null or undefined', this._productId);
+      throw new InvalidDimensionsException(
+        'Dimensions cannot be null or undefined',
+        this._productId,
+      );
     }
     this._dimensions = dimensions;
   }
@@ -78,7 +81,12 @@ export class Product extends AbstractEntity {
   /**
    * Create a product from basic parameters
    */
-  static create(productId: string, height: number, width: number, length: number): Product {
+  static create(
+    productId: string,
+    height: number,
+    width: number,
+    length: number,
+  ): Product {
     const dimensions = new Dimensions(height, width, length);
     return new Product(productId, dimensions);
   }

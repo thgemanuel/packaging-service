@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from '@domain/entities/product.entity';
-import { ProductRepository, PRODUCT_REPOSITORY_NAME } from '@domain/repositories/product.repository';
+import {
+  ProductRepository,
+  PRODUCT_REPOSITORY_NAME,
+} from '@domain/repositories/product.repository';
 import { ProductTypeORM } from '../schemas/product.schema';
 import { ProductMapper } from '../mappers/product.mapper';
 
@@ -18,7 +21,9 @@ export class ProductRepositoryTypeORM implements ProductRepository {
     const productSchema = await this.typeOrmRepository.findOne({
       where: { productId },
     });
-    return productSchema ? this.productMapper.fromSchemaToEntity(productSchema) : null;
+    return productSchema
+      ? this.productMapper.fromSchemaToEntity(productSchema)
+      : null;
   }
 
   async save(product: Product): Promise<Product> {
@@ -30,16 +35,20 @@ export class ProductRepositoryTypeORM implements ProductRepository {
   }
 
   async saveMany(products: Product[]): Promise<Product[]> {
-    const productSchemas = products.map(product => this.productMapper.fromEntityToSchema(product));
+    const productSchemas = products.map((product) =>
+      this.productMapper.fromEntityToSchema(product),
+    );
     const savedSchemas = await this.typeOrmRepository.save(productSchemas, {
       reload: true,
     });
-    return savedSchemas.map(schema => this.productMapper.fromSchemaToEntity(schema));
+    return savedSchemas.map((schema) =>
+      this.productMapper.fromSchemaToEntity(schema),
+    );
   }
 
   async upsert(product: Product): Promise<Product> {
     const productSchema = this.productMapper.fromEntityToSchema(product);
-    
+
     // Try to find existing product by productId
     const existingProduct = await this.typeOrmRepository.findOne({
       where: { productId: product.productId },
@@ -59,12 +68,12 @@ export class ProductRepositoryTypeORM implements ProductRepository {
 
   async upsertMany(products: Product[]): Promise<Product[]> {
     const savedProducts: Product[] = [];
-    
+
     for (const product of products) {
       const savedProduct = await this.upsert(product);
       savedProducts.push(savedProduct);
     }
-    
+
     return savedProducts;
   }
 }

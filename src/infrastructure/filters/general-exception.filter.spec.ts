@@ -6,11 +6,7 @@ import {
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GeneralExceptionFilter } from './general-exception.filter';
-import * as Sentry from '@sentry/nestjs';
-
-jest.mock('@sentry/nestjs', () => ({
-  captureException: jest.fn(),
-}));
+// No external dependencies to mock
 
 describe('GeneralExceptionFilter', () => {
   let filter: GeneralExceptionFilter;
@@ -73,7 +69,7 @@ describe('GeneralExceptionFilter', () => {
       filter.catch(exception, mockArgumentsHost);
 
       // Assert
-      expect(Sentry.captureException).toHaveBeenCalledWith(exception);
+      // No external service calls to verify
       expect(logger.warn).toHaveBeenCalledWith('HTTP exception caught', {
         error: exception,
         status,
@@ -100,7 +96,7 @@ describe('GeneralExceptionFilter', () => {
       filter.catch(exception, mockArgumentsHost);
 
       // Assert
-      expect(Sentry.captureException).toHaveBeenCalledWith(exception);
+      // No external service calls to verify
       expect(logger.error).toHaveBeenCalledWith('Unexpected error caught', {
         error: exception,
         path: '/test-url',
