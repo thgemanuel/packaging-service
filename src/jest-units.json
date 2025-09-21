@@ -1,0 +1,32 @@
+{
+  "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "testEnvironment": "node",
+    "coverageDirectory": "../coverage",
+    "coveragePathIgnorePatterns": [
+      "infrastructure",
+      "domain/exceptions",
+      "main.ts",
+      "root.module.ts",
+      "application.module.ts",
+      "domain.module.ts",
+      "index.ts",
+      "instrument.ts"
+    ],
+    "moduleNameMapper": {
+      "^@domain(.*)$": "<rootDir>/domain$1",
+      "^@application(.*)$": "<rootDir>/application$1",
+      "^@infrastructure(.*)$": "<rootDir>/infrastructure$1"
+    }
+  }
